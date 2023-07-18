@@ -1,5 +1,4 @@
-
- public enum SolarSystem {
+public enum SolarSystem {
     MERCURY( 0, 2440, null),
     VENUS(108, 6052, MERCURY),
     EARTH(149, 6371, VENUS),
@@ -18,38 +17,35 @@
     private SolarSystem nextPlanet;
 
     SolarSystem( int prevDistance, int radius, SolarSystem previousPlanet) {
-        orderFromSun = this.ordinal()+1;
+        this.orderFromSun = ordinal()+1;
         this.prevDistance = prevDistance;
         this.radius = radius;
         this.previousPlanet = previousPlanet;
+        this.distanceFromSun = calculateDistanceFromSun();
+        //this.nextPlanet = getNextPlanet();
     }
 
-    public int getOrderFromSun() {
-        return orderFromSun;
-    }
-
-    public int getPrevDistance() {
-        return prevDistance;
-    }
-
-    //------------3) віддаленість від сонця         ?
     private int calculateDistanceFromSun() {
+        if (previousPlanet != null) {
+            return previousPlanet.getDistanceFromSun() + prevDistance;
+        }
         return 0;
     }
-    public int getDistanceFromSun() {
-        return distanceFromSun;
-    }
-
-    public int getRadius() {
-        return radius;
-    }
-
-    public SolarSystem getPreviousPlanet() {
-        return previousPlanet;
-    }
+    public int getDistanceFromSun() {return distanceFromSun;}
 
     //---------------6) наступна планета           ?
     public SolarSystem getNextPlanet() {
-        return nextPlanet;
+
+        return null;
     }
+
+   public String print() {
+       return "порядковий номер від сонця " + this.orderFromSun +
+             "\nвіддаленість від попередньої планети " + this.prevDistance +
+             "\nвіддаленість від сонця " + this.prevDistance +
+             "\nрадіус планети " + this.radius +
+             "\nпопередня планета " + this.previousPlanet +
+             "\nнаступна планета " + this.nextPlanet;
+   }
+
 }
