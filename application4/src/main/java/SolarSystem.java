@@ -1,51 +1,63 @@
 public enum SolarSystem {
-    MERCURY( 0, 2440, null),
-    VENUS(108, 6052, MERCURY),
-    EARTH(149, 6371, VENUS),
-    MARS(227, 3389, EARTH),
-    JUPITER(778, 69911, MARS),
-    SATURN(1427, 58232, JUPITER),
-    URANUS(2871, 25362, SATURN),
-    NEPTUNE(4497, 24622, URANUS),
-    PLUTO(5906, 1188, NEPTUNE);
+    MERCURY(0, 10, null),
+    VENUS(100, 20, MERCURY),
+    EARTH(200, 30, VENUS),
+    MARS(300, 40, EARTH),
+    JUPITER(400, 50, MARS),
+    SATURN(500, 60, JUPITER),
+    URANUS(600, 70, SATURN),
+    NEPTUNE(700, 80, URANUS),
+    PLUTO(800, 90, NEPTUNE);
 
     private int orderFromSun;
-    private int prevDistance;
     private int distanceFromSun;
     private int radius;
-    private SolarSystem previousPlanet;
+    private SolarSystem prevPlanet;
+    private int prevPlanetDistance;
     private SolarSystem nextPlanet;
-
-    SolarSystem( int prevDistance, int radius, SolarSystem previousPlanet) {
-        this.orderFromSun = ordinal()+1;
-        this.prevDistance = prevDistance;
-        this.radius = radius;
-        this.previousPlanet = previousPlanet;
-        this.distanceFromSun = calculateDistanceFromSun();
-        //this.nextPlanet = getNextPlanet();
+    public int getOrderFromSun() {
+        return orderFromSun;
     }
 
-    private int calculateDistanceFromSun() {
-        if (previousPlanet != null) {
-            return previousPlanet.getDistanceFromSun() + prevDistance;
-        }
-        return 0;
+    public int getDistanceFromSun() {
+        return distanceFromSun;
     }
-    public int getDistanceFromSun() {return distanceFromSun;}
 
-    //---------------6) наступна планета           ?
+    public int getRadius() {
+        return radius;
+    }
+
+    public SolarSystem getPrevPlanet() {
+        return prevPlanet;
+    }
+
+    public int getPrevPlanetDistance() {
+        return prevPlanetDistance;
+    }
+
     public SolarSystem getNextPlanet() {
-
-        return null;
+        return nextPlanet;
     }
 
-   public String print() {
-       return "порядковий номер від сонця " + this.orderFromSun +
-             "\nвіддаленість від попередньої планети " + this.prevDistance +
-             "\nвіддаленість від сонця " + this.prevDistance +
-             "\nрадіус планети " + this.radius +
-             "\nпопередня планета " + this.previousPlanet +
-             "\nнаступна планета " + this.nextPlanet;
-   }
+    public void setNextPlanet(SolarSystem nextPlanet) {
+        this.nextPlanet = nextPlanet;
+    }
+    SolarSystem(int prevPlanetDistance, int radius, SolarSystem prevPlanet) {
+        this.orderFromSun = ordinal() + 1; //returns position
+        this.prevPlanetDistance = prevPlanetDistance;
+        this.radius = radius;
+        this.prevPlanet = prevPlanet;
+        this.distanceFromSun = (prevPlanet == null) ? 0 : prevPlanetDistance + prevPlanet.getRadius() + prevPlanet.getDistanceFromSun();
+        if (this.prevPlanet != null) this.prevPlanet.setNextPlanet(this);
+    }
+
+    public String print() {
+        return "порядковий номер від сонця " + getOrderFromSun() +
+                "\nвіддаленість від попередньої планети " + getPrevPlanetDistance() +
+                "\nвіддаленість від сонця " + getDistanceFromSun() +
+                "\nрадіус планети " + getRadius() +
+                "\nпопередня планета " + getPrevPlanet() +
+                "\nнаступна планета " + getNextPlanet();
+    }
 
 }
